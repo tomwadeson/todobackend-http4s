@@ -14,10 +14,22 @@ class InMemoryTodoItemRepository extends TodoItemRepository {
   override def getAll: Seq[TodoItem] =
     repository.values.toSeq
 
+  override def getById(id: Long): Option[TodoItem] =
+    repository.get(id)
+
   override def create(todoItemForm: TodoItemForm): TodoItem = {
-    val id = idSequence.getAndIncrement
+    val id       = idSequence.getAndIncrement
     val todoItem = TodoItem(id, todoItemForm.title)
     repository.put(id, todoItem)
     todoItem
   }
+
+  override def delete(id: Long): Unit =
+    repository.remove(id)
+
+  override def deleteAll: Unit =
+    synchronized {
+      idSequence.set(0)
+      repository.clear()
+    }
 }

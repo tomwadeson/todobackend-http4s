@@ -40,6 +40,38 @@ class TodoServiceSpec extends FlatSpec with Matchers {
     repository.getAll should be(Seq(TodoItem(0, "Hello, World!")))
   }
 
+  it should "fetch a single todo item by its ID" in new Fixture {
+    repository.create(TodoItemForm("Hello"))
+
+    val req = request(Method.GET, "/todos/0")
+    val response = service.run(req).unsafePerformSync
+
+    response.status should be(Status.Ok)
+    repository.getAll should be(Seq(TodoItem(0, "Hello")))
+  }
+
+  it should "delete todo items by ID" in new Fixture {
+    repository.create(TodoItemForm("Hello"))
+    repository.create(TodoItemForm("World"))
+
+    val req = request(Method.DELETE, "/todos/0")
+    val response = service.run(req).unsafePerformSync
+
+    response.status should be(Status.Ok)
+    repository.getAll should be(Seq(TodoItem(1, "World")))
+  }
+
+  it should "delete all todo items" in new Fixture {
+    repository.create(TodoItemForm("Hello"))
+    repository.create(TodoItemForm("Hello"))
+
+    val req = request(Method.DELETE, "/todos")
+    val response = service.run(req).unsafePerformSync
+
+    response.status should be(Status.Ok)
+    repository.getAll should be(empty)
+  }
+
   trait Fixture {
     val repository = new InMemoryTodoItemRepository
     val service    = new TodoService(repository).service

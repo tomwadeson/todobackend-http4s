@@ -17,9 +17,20 @@ class TodoService(todoItemRepository: TodoItemRepository) {
     case GET -> Root / "todos" =>
       Ok(todoItemRepository.getAll)
 
+    case GET -> Root / "todos" / LongVar(id) =>
+      todoItemRepository.getById(id).fold(NotFound())(Ok(_))
+
     case req @ POST -> Root / "todos" =>
       req.decode[TodoItemForm] { todoItemForm =>
         Created(todoItemRepository.create(todoItemForm))
       }
+
+    case DELETE -> Root / "todos" / LongVar(id) =>
+      Ok(todoItemRepository.delete(id))
+
+    case DELETE -> Root / "todos" => {
+      todoItemRepository.deleteAll
+      Ok()
+    }
   }
 }
