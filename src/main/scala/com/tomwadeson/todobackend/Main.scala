@@ -15,7 +15,7 @@ object Main extends ServerApp {
 
   override def server(args: List[String]): Task[Server] =
     BlazeBuilder
-      .bindHttp(8080, "0.0.0.0")
+      .bindHttp(TodoBackendConfig.Port, "0.0.0.0")
       .mountService(service, "/")
       .start
 }
