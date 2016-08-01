@@ -1,6 +1,6 @@
 package com.tomwadeson.todobackend.persistence
 
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemForm}
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemForm, TodoItemPartialForm}
 
 trait TodoItemRepository {
   def getAll: Seq[TodoItem]
@@ -8,4 +8,5 @@ trait TodoItemRepository {
   def create(todoItemForm: TodoItemForm): TodoItem
   def deleteAll: Unit
   def delete(id: Long): Unit
+  def update(id: Long, todoItemForm: TodoItemPartialForm): Option[TodoItem]
 }

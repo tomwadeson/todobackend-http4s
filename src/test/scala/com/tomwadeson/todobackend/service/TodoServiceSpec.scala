@@ -1,7 +1,8 @@
 package com.tomwadeson.todobackend.service
 
 import cats.data.Xor
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemForm}
+import com.tomwadeson.todobackend.TodoBackendConfig
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemForm, TodoItemPartialForm}
 import com.tomwadeson.todobackend.persistence.InMemoryTodoItemRepository
 import io.circe.generic.auto._
 import io.circe.parser._
@@ -71,6 +72,18 @@ class TodoServiceSpec extends FlatSpec with Matchers {
 
     response.status should be(Status.Ok)
     repository.getAll should be(empty)
+  }
+
+  it should "update todo items" in new Fixture {
+    repository.create(TodoItemForm("Hello"))
+
+    val req = request(Method.PATCH,
+                      "/todos/0",
+                      entityBodyFromString(TodoItemPartialForm(Some("Hello, World!"), Some(true)).asJson.noSpaces))
+    val response = service.run(req).unsafePerformSync
+
+    response.status should be(Status.Ok)
+    repository.getById(0) should contain(TodoItem(0, "Hello, World!", s"${TodoBackendConfig.BaseUrl}/0", true))
   }
 
   trait Fixture {
