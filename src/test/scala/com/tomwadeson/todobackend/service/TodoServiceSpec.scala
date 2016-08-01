@@ -27,7 +27,8 @@ class TodoServiceSpec extends FlatSpec with Matchers {
 
     todoItems match {
       case Xor.Right(todoItems) =>
-        todoItems should be(Seq(TodoItem(0, "First, do this"), TodoItem(1, "Then, do that")))
+        todoItems should be(
+            Seq(TodoItem(0, TodoItemForm("First, do this")), TodoItem(1, TodoItemForm("Then, do that"))))
       case _ => fail()
     }
   }
@@ -37,35 +38,35 @@ class TodoServiceSpec extends FlatSpec with Matchers {
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Created)
-    repository.getAll should be(Seq(TodoItem(0, "Hello, World!")))
+    repository.getAll should be(Seq(TodoItem(0, TodoItemForm("Hello, World!"))))
   }
 
   it should "fetch a single todo item by its ID" in new Fixture {
     repository.create(TodoItemForm("Hello"))
 
-    val req = request(Method.GET, "/todos/0")
+    val req      = request(Method.GET, "/todos/0")
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Ok)
-    repository.getAll should be(Seq(TodoItem(0, "Hello", false)))
+    repository.getAll should be(Seq(TodoItem(0, TodoItemForm("Hello"))))
   }
 
   it should "delete todo items by ID" in new Fixture {
     repository.create(TodoItemForm("Hello"))
     repository.create(TodoItemForm("World"))
 
-    val req = request(Method.DELETE, "/todos/0")
+    val req      = request(Method.DELETE, "/todos/0")
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Ok)
-    repository.getAll should be(Seq(TodoItem(1, "World", false)))
+    repository.getAll should be(Seq(TodoItem(1, TodoItemForm("World"))))
   }
 
   it should "delete all todo items" in new Fixture {
     repository.create(TodoItemForm("Hello"))
     repository.create(TodoItemForm("Hello"))
 
-    val req = request(Method.DELETE, "/todos")
+    val req      = request(Method.DELETE, "/todos")
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Ok)

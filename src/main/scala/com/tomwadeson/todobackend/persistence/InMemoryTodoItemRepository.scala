@@ -19,7 +19,7 @@ class InMemoryTodoItemRepository extends TodoItemRepository {
 
   override def create(todoItemForm: TodoItemForm): TodoItem = {
     val id       = idSequence.getAndIncrement
-    val todoItem = TodoItem(id, todoItemForm.title)
+    val todoItem = TodoItem(id, todoItemForm)
     repository.put(id, todoItem)
     todoItem
   }

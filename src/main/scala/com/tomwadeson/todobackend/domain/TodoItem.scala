@@ -1,4 +1,14 @@
 package com.tomwadeson.todobackend.domain
 
-case class TodoItem(id: Long, title: String, completed: Boolean = false)
+import com.tomwadeson.todobackend.TodoBackendConfig
+
+case class TodoItem(id: Long, title: String, url: String, completed: Boolean = false)
+
+object TodoItem {
+  def apply(id: Long, todoItemForm: TodoItemForm): TodoItem = {
+    val url = s"${TodoBackendConfig.BaseUrl}/$id"
+    TodoItem(id, todoItemForm.title, url)
+  }
+}
+
 case class TodoItemForm(title: String)
