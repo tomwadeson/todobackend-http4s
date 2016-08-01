@@ -1,3 +1,5 @@
+enablePlugins(JavaAppPackaging)
+
 lazy val root = (project in file(".")).
   settings(
     name := "todobackend-http4s"
