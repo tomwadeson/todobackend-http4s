@@ -1,6 +1,6 @@
 package com.tomwadeson.todobackend.service
 
-import com.tomwadeson.todobackend.domain.{TodoItemForm, TodoItemPartialForm}
+import com.tomwadeson.todobackend.domain.{TodoItemPostForm, TodoItemPatchForm}
 import com.tomwadeson.todobackend.persistence.TodoItemRepository
 import io.circe.{Decoder, Encoder}
 import org.http4s.HttpService
@@ -21,7 +21,7 @@ class TodoService(todoItemRepository: TodoItemRepository) {
       todoItemRepository.getById(id).fold(NotFound())(Ok(_))
 
     case req @ POST -> Root / "todos" =>
-      req.decode[TodoItemForm] { todoItemForm =>
+      req.decode[TodoItemPostForm] { todoItemForm =>
         Created(todoItemRepository.create(todoItemForm))
       }
 
@@ -34,7 +34,7 @@ class TodoService(todoItemRepository: TodoItemRepository) {
     }
 
     case req @ PATCH -> Root / "todos" / LongVar(id) =>
-      req.decode[TodoItemPartialForm] { todoItemForm =>
+      req.decode[TodoItemPatchForm] { todoItemForm =>
         todoItemRepository.update(id, todoItemForm).fold(NotFound())(Ok(_))
       }
   }

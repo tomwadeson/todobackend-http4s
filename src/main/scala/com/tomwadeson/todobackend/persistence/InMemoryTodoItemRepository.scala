@@ -2,7 +2,7 @@ package com.tomwadeson.todobackend.persistence
 
 import java.util.concurrent.atomic.AtomicLong
 
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemForm, TodoItemPartialForm}
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPostForm, TodoItemPatchForm}
 
 import scala.collection.concurrent.TrieMap
 
@@ -17,7 +17,7 @@ class InMemoryTodoItemRepository extends TodoItemRepository {
   override def getById(id: Long): Option[TodoItem] =
     repository.get(id)
 
-  override def create(todoItemForm: TodoItemForm): TodoItem = {
+  override def create(todoItemForm: TodoItemPostForm): TodoItem = {
     val id       = idSequence.getAndIncrement
     val todoItem = TodoItem(id, todoItemForm)
     repository.put(id, todoItem)
@@ -33,7 +33,7 @@ class InMemoryTodoItemRepository extends TodoItemRepository {
       repository.clear()
     }
 
-  override def update(id: Long, todoItemForm: TodoItemPartialForm): Option[TodoItem] = {
+  override def update(id: Long, todoItemForm: TodoItemPatchForm): Option[TodoItem] = {
     val item = repository.get(id).map(_.update(todoItemForm))
     item.foreach(repository.update(id, _))
     item
