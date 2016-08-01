@@ -47,7 +47,7 @@ class TodoServiceSpec extends FlatSpec with Matchers {
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Ok)
-    repository.getAll should be(Seq(TodoItem(0, "Hello")))
+    repository.getAll should be(Seq(TodoItem(0, "Hello", false)))
   }
 
   it should "delete todo items by ID" in new Fixture {
@@ -58,7 +58,7 @@ class TodoServiceSpec extends FlatSpec with Matchers {
     val response = service.run(req).unsafePerformSync
 
     response.status should be(Status.Ok)
-    repository.getAll should be(Seq(TodoItem(1, "World")))
+    repository.getAll should be(Seq(TodoItem(1, "World", false)))
   }
 
   it should "delete all todo items" in new Fixture {
