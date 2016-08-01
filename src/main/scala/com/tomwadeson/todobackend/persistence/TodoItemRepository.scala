@@ -1,6 +1,6 @@
 package com.tomwadeson.todobackend.persistence
 
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPostForm, TodoItemPatchForm}
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPatchForm, TodoItemPostForm}
 
 trait TodoItemRepository {
   def getAll: Seq[TodoItem]

@@ -2,7 +2,7 @@ package com.tomwadeson.todobackend.persistence
 
 import java.util.concurrent.atomic.AtomicLong
 
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPostForm, TodoItemPatchForm}
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPatchForm, TodoItemPostForm}
 
 import scala.collection.concurrent.TrieMap
 

@@ -1,11 +1,11 @@
 package com.tomwadeson.todobackend.service
 
-import com.tomwadeson.todobackend.domain.{TodoItemPostForm, TodoItemPatchForm}
+import com.tomwadeson.todobackend.domain.{TodoItemPatchForm, TodoItemPostForm}
 import com.tomwadeson.todobackend.persistence.TodoItemRepository
+import io.circe.generic.auto._
 import io.circe.{Decoder, Encoder}
 import org.http4s.HttpService
 import org.http4s.dsl._
-import io.circe.generic.auto._
 
 class TodoService(todoItemRepository: TodoItemRepository) {
 

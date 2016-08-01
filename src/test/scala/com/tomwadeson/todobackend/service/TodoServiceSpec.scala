@@ -2,7 +2,7 @@ package com.tomwadeson.todobackend.service
 
 import cats.data.Xor
 import com.tomwadeson.todobackend.TodoBackendConfig
-import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPostForm, TodoItemPatchForm}
+import com.tomwadeson.todobackend.domain.{TodoItem, TodoItemPatchForm, TodoItemPostForm}
 import com.tomwadeson.todobackend.persistence.InMemoryTodoItemRepository
 import io.circe.generic.auto._
 import io.circe.parser._
