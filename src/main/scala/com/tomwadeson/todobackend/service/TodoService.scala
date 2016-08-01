@@ -25,8 +25,11 @@ class TodoService(todoItemRepository: TodoItemRepository) {
         Created(todoItemRepository.create(todoItemForm))
       }
 
-    case DELETE -> Root / "todos" / LongVar(id) =>
-      Ok(todoItemRepository.delete(id))
+    case DELETE -> Root / "todos" / LongVar(id) => {
+      val todoItem = todoItemRepository.getById(id)
+      todoItem.foreach(item => todoItemRepository.delete(item.id))
+      todoItem.fold(NotFound())(Ok(_))
+    }
 
     case DELETE -> Root / "todos" => {
       todoItemRepository.deleteAll
